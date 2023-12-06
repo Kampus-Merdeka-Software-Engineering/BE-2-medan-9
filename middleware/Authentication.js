@@ -1,14 +1,23 @@
-import jwt from 'jsonwebtoken'
+// authMiddleware.js
+import jwt from 'jsonwebtoken';
 
-export const Authentication = async(req, res, next) => {
+export const Authentication = (req, res, next) => {
     const authHeaders = req.headers['authorization'];
     const token = authHeaders && authHeaders.split(' ')[1];
-    if(!token) return res.sendStatus(401);
-    if(token !== req.cookies.token) return res.sendStatus(403);
-    jwt.verify(token, process.env.TOKEN, (err, decoded) => {
-        if(err) return res.sendStatus(403);
-        req.userId = decoded.userId;
 
+    if (!token) {
+        return res.sendStatus(401);
+    }
+
+    jwt.verify(token, process.env.TOKEN, (err, decoded) => {
+        if (err) {
+            console.error('JWT Verification Error:', err);
+            return res.status(403).json({ message: 'Invalid token or unauthorized.' });
+        }
+
+        req.userId = decoded.userId;
         next();
-    })
+    });
 }
+
+export default Authentication;

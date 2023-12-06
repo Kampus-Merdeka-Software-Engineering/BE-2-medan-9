@@ -41,21 +41,26 @@ export const Login = async(req, res) => {
         const email = checkUsername[0].email;
 
         const token = jwt.sign({userId, name, email}, process.env.TOKEN, {expiresIn: "1d"});
-
+        
         await ModelUser.update({token: token}, {where: {id_user: userId}});
-
+        
         const data = {
             userId: userId,
             name: name,
             email: email,
         }
+        
 
         res.cookie('token', token, {
             httpOnly: true,
             maxAge: 24 * 60 * 60 * 1000,
-        })
+        });
 
-        return res.status(200).json({result: data, token});
+        
+        // Optionally, you can include additional data in the same response
+        return res.status(200).json({ result: data,
+            token: token });
+        
     } catch (error) {
         return res.status(500).json({message: error});
     }
