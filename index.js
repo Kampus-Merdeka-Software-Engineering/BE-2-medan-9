@@ -4,9 +4,6 @@ import cors from "cors";
 import cookieParser from "cookie-parser"; // Import cookie-parser
 import dotenv from "dotenv";
 import db from "./configs/Database.js";
-import ModelUser from './models/ModelUser.js'
-import ModelRoom from './models/ModelRoom.js'
-import ModelReservation from './models/ModelReservation.js'
 dotenv.config()
 
 // Router
@@ -18,21 +15,21 @@ const app = express()
 try {
     await db.authenticate();
     console.log("Database connected....");
-    await ModelUser.sync();
-    await ModelRoom.sync();
-    await ModelReservation.sync();
+    db.sync({alter:true})
 } catch (error) {
     console.log(error);
 }
 
-app.use(cors({
-    origin: 'http://127.0.0.1:5500',
-    credentials: true,
-}));
+app.use(cors());
+
 app.use(express.json());
 
 // Use cookie-parser middleware
 app.use(cookieParser());
+
+app.get('/', (req, res) => {
+    return res.send({message: "Hallo World!"})
+})
 
 app.options('/logout', cors()); // Handle preflight for /auth/logout
 app.use('/auth', RouteAuth);
