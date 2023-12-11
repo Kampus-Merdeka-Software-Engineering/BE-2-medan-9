@@ -11,7 +11,7 @@ import RouteAuth from './routers/RouteAuth.js';
 import Routereservation from './routers/RouteReservation.js'
 
 const app = express()
-const port = process.env.DB_PORT || 5001;
+const port = process.env.PORT
 
 try {
     await db.authenticate();
