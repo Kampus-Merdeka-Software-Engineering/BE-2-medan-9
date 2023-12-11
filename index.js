@@ -18,13 +18,17 @@ const app = express()
 try {
     await db.authenticate();
     console.log("Database connected....");
-    db.sync({alter:true})
+    await ModelUser.sync();
+    await ModelRoom.sync();
+    await ModelReservation.sync();
 } catch (error) {
     console.log(error);
 }
 
-app.use(cors());
-
+app.use(cors({
+    origin: 'http://127.0.0.1:5500',
+    credentials: true,
+}));
 app.use(express.json());
 
 // Use cookie-parser middleware
