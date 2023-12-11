@@ -4,7 +4,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser"; // Import cookie-parser
 import dotenv from "dotenv";
 import db from "./configs/Database.js";
-import ModelUser from './models/ModelUser.js'
+import ModelUser from './ModelUser.js'
 import ModelRoom from './models/ModelRoom.js'
 import ModelReservation from './models/ModelReservation.js'
 dotenv.config()
